@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestion des Livres</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body>
+<h1>Gestion des Livres</h1>
+<hr/>
+
+<form action="/livres/ajouter" method="post">
+    <label>ISBN :</label>
+    <input type="text" name="isbn" required/>
+
+    <label>Titre :</label>
+    <input type="text" name="titre" required/>
+
+    <button type="submit" class="btn-ajouter">Ajouter</button>
+</form>
+
+<hr/>
+
+<h2>Liste des Livres</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>ISBN</th>
+        <th>Titre</th>
+        <th>Auteurs</th>
+    </tr>
+    <tr th:each="livre : ${livres}">
+        <td th:text="${livre.id}"></td>
+        <td th:text="${livre.isbn}"></td>
+        <td th:text="${livre.titre}"></td>
+        <td th:each="auteur : ${livre.auteurs}"
+            th:text="${auteur.nom}"></td>
+    </tr>
+</table>
+
+<hr/>
+<a href="/" class="retour">← Retour au Menu</a>
+</body>
+</html>

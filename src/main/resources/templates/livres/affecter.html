@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Affectation Auteur</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body>
+<h1>Affectation Auteur</h1>
+<hr/>
+
+<h2>Affectation des auteurs aux livres</h2>
+
+<form action="/affecter" method="post">
+    <label>Livre :</label>
+    <select name="livreId">
+        <option value="">Sélectionner un livre</option>
+        <option th:each="livre : ${livres}"
+                th:value="${livre.id}"
+                th:text="${livre.titre}">
+        </option>
+    </select>
+
+    <label>Auteur :</label>
+    <select name="auteurId">
+        <option value="">Sélectionner un auteur</option>
+        <option th:each="auteur : ${auteurs}"
+                th:value="${auteur.id}"
+                th:text="${auteur.nom + ' ' + auteur.prenom}">
+        </option>
+    </select>
+
+    <button type="submit" class="btn-ajouter">Ajouter</button>
+</form>
+
+<hr/>
+
+<h2>Liste de tous les auteurs</h2>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Nom Prénom</th>
+        <th>Points</th>
+    </tr>
+    <tr th:each="auteur : ${auteurs}">
+        <td th:text="${auteur.id}"></td>
+        <td th:text="${auteur.nom + ' ' + auteur.prenom}"></td>
+        <td th:text="${auteur.points}"></td>
+    </tr>
+</table>
+
+<hr/>
+<a href="/" class="retour">← Retour au Menu</a>
+</body>
+</html>
