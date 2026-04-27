@@ -39,9 +39,20 @@ public class AuteurController {
     }
 
     @PostMapping("/modifier/{id}")
-    public String updateAuteur(@PathVariable Long id, @ModelAttribute Auteur auteur) {
-        auteur.setId(id);
-        auteurService.saveAuteur(auteur);
+    public String updateAuteur(@PathVariable Long id,
+                               @ModelAttribute Auteur auteur) {
+
+        // ✅ Récupérer l'auteur existant depuis la BDD
+        Auteur existing = auteurService.getAuteurById(id);
+
+        if (existing != null) {
+            // ✅ Mettre à jour seulement nom et prénom
+            existing.setNom(auteur.getNom());
+            existing.setPrenom(auteur.getPrenom());
+            // ✅ Les points sont préservés automatiquement
+            auteurService.saveAuteur(existing);
+        }
+
         return "redirect:/auteurs";
     }
 

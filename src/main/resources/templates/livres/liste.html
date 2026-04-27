@@ -11,15 +11,12 @@
 <form action="/livres/ajouter" method="post">
     <label>ISBN :</label>
     <input type="text" name="isbn" required/>
-
     <label>Titre :</label>
     <input type="text" name="titre" required/>
-
     <button type="submit" class="btn-ajouter">Ajouter</button>
 </form>
 
 <hr/>
-
 <h2>Liste des Livres</h2>
 <table>
     <tr>
@@ -27,13 +24,31 @@
         <th>ISBN</th>
         <th>Titre</th>
         <th>Auteurs</th>
+        <th>Actions</th>
     </tr>
     <tr th:each="livre : ${livres}">
         <td th:text="${livre.id}"></td>
         <td th:text="${livre.isbn}"></td>
         <td th:text="${livre.titre}"></td>
-        <td th:each="auteur : ${livre.auteurs}"
-            th:text="${auteur.nom}"></td>
+
+        <!-- ✅ Tous les auteurs dans UNE seule colonne -->
+        <td>
+            <span th:each="auteur, iter : ${livre.auteurs}">
+                <span th:text="${auteur.nom + ' ' + auteur.prenom}"></span>
+                <span th:if="${!iter.last}"> , </span>
+            </span>
+        </td>
+
+        <td>
+            <a th:href="@{/livres/modifier/{id}(id=${livre.id})}"
+               class="btn-ajouter">✏️ Modifier</a>
+            <a th:href="@{/livres/supprimer/{id}(id=${livre.id})}"
+               class="btn-ajouter"
+               style="background-color:#dc3545;"
+               onclick="return confirm('Confirmer la suppression ?')">
+                🗑️ Supprimer
+            </a>
+        </td>
     </tr>
 </table>
 

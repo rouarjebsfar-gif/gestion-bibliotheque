@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+
 @Controller
 public class AffectationController {
 
@@ -28,17 +30,31 @@ public class AffectationController {
     }
 
     @PostMapping("/affecter")
-    public String affecter(@RequestParam Long livreId,
-                           @RequestParam Long auteurId) {
+    public String affecter(
+            @RequestParam(required = false) Long livreId,
+            @RequestParam(required = false) Long auteurId) {
+
+        if (livreId == null || auteurId == null) {
+            return "redirect:/affecter";
+        }
+
         Livre livre = livreService.getLivreById(livreId);
         Auteur auteur = auteurService.getAuteurById(auteurId);
 
         if (livre != null && auteur != null) {
-            livre.getAuteurs().add(auteur);
-            auteur.setPoints(auteur.getPoints() + 10);
-            auteurService.saveAuteur(auteur);
-            livreService.saveLivre(livre);
+
+            if (livre.getAuteurs() == null) {
+                livre.setAuteurs(new ArrayList<>());
+            }
+
+            if (!livre.getAuteurs().contains(auteur)) {
+                livre.getAuteurs().add(auteur);
+                auteur.setPoints(auteur.getPoints() + 10);
+                auteurService.saveAuteur(auteur);
+                livreService.saveLivre(livre);
+            }
         }
+
         return "redirect:/affecter";
     }
 }

@@ -7,12 +7,12 @@
 <body>
 <h1>Affectation Auteur</h1>
 <hr/>
-
 <h2>Affectation des auteurs aux livres</h2>
 
 <form action="/affecter" method="post">
+
     <label>Livre :</label>
-    <select name="livreId">
+    <select name="livreId" required>
         <option value="">Sélectionner un livre</option>
         <option th:each="livre : ${livres}"
                 th:value="${livre.id}"
@@ -21,19 +21,19 @@
     </select>
 
     <label>Auteur :</label>
-    <select name="auteurId">
+    <select name="auteurId" required>
         <option value="">Sélectionner un auteur</option>
         <option th:each="auteur : ${auteurs}"
                 th:value="${auteur.id}"
-                th:text="${auteur.nom + ' ' + auteur.prenom}">
+                th:text="${auteur.nom + (auteur.prenom != null ? ' ' + auteur.prenom : '')}">
         </option>
     </select>
 
     <button type="submit" class="btn-ajouter">Ajouter</button>
+
 </form>
 
 <hr/>
-
 <h2>Liste de tous les auteurs</h2>
 <table>
     <tr>
@@ -43,7 +43,7 @@
     </tr>
     <tr th:each="auteur : ${auteurs}">
         <td th:text="${auteur.id}"></td>
-        <td th:text="${auteur.nom + ' ' + auteur.prenom}"></td>
+        <td th:text="${auteur.nom + (auteur.prenom != null ? ' ' + auteur.prenom : '')}"></td>
         <td th:text="${auteur.points}"></td>
     </tr>
 </table>
